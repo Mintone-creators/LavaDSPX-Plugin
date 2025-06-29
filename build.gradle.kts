@@ -8,7 +8,7 @@ plugins {
 val pluginVersion = "0.0.5"
 val commitSha = System.getenv("GITHUB_SHA")?.take(7) ?: "unknown"
 val preRelease = System.getenv("PRERELEASE")?.toBoolean() ?: false
-val verName = if (preRelease) "$pluginVersion-$commitSha" else pluginVersion
+val verName = if (preRelease) "$commitSha" else pluginVersion
 
 group = "me.devoxin.lavadspx.plugin"
 version = verName
