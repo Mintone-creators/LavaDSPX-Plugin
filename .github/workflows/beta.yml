@@ -1,13 +1,9 @@
-name: Release
+name: Release Beta
 
 on:
-  workflow_dispatch:
-    inputs:
-      prerelease:
-        description: Whether this is a prerelease
-        type: boolean
-        default: false
-        required: true
+  push:
+    branches:
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,9 +25,9 @@ jobs:
       - name: Dependencies
         run: ./gradlew --no-daemon dependencies
 
-      - name: Publish Stable to Maven
+      - name: Release Beta to Maven Central
         env:
-          PRERELEASE: "${{ github.event.inputs.prerelease }}"
+          PRERELEASE: "true"
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
           GITHUB_SHA: ${{ github.sha }}
