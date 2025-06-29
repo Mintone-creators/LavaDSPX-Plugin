@@ -2,7 +2,7 @@ plugins {
     java
     `maven-publish`
     alias(libs.plugins.lavalink)
-    id("com.github.johnrengelman.shadow")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 val pluginVersion = "0.0.5"
