@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      prerelease:
+        description: Whether this is a prerelease
+        type: boolean
+        default: false
+        required: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: './'
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Dependencies
+        run: ./gradlew --no-daemon dependencies
+
+      - name: Publish Stable (GitHub + Maven)
+        env:
+          PRERELEASE: "${{ github.event.inputs.prerelease }}"
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: ./gradlew --no-daemon build publish
